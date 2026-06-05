@@ -1,6 +1,6 @@
 # 中文课程报告生成器
 
-一个 [Claude Code](https://claude.ai/code) 技能（Skill），严格按照**成都东软学院定制班课程报告撰写规范**，自动生成格式完整的 `.docx` 中文课程/期末报告。
+一个 AI 辅助工具，严格按照**成都东软学院定制班课程报告撰写规范**，自动生成格式完整的 `.docx` 中文课程/期末报告。支持 **Claude Code**、**Cursor** 和 **Trae** 三种 AI 编程工具。
 
 ## 概述
 
@@ -27,21 +27,26 @@
 
 ## 环境要求
 
-- [Claude Code](https://claude.ai/code) 已安装并配置
-- [Node.js](https://nodejs.org/)（v16 或更高版本）
-- `docx` npm 包 — 技能运行时会自动安装
+所有平台都需要 [Node.js](https://nodejs.org/)（v16 或更高版本）来运行生成脚本。`docx` npm 包会在首次使用时自动安装。
 
-## 安装方式
+### 平台支持
 
-### 方式一：注册为技能（推荐）
+| 平台 | 支持方式 | 状态 |
+|------|---------|------|
+| **Claude Code** | Skill（`SKILL.md`） | 完全支持 |
+| **Cursor** | 项目规则（`.cursor/rules/`） | 完全支持 |
+| **Trae** | 项目规则（`.trae/rules/`） | 完全支持 |
+
+## 安装与配置
+
+### Claude Code
+
+#### 方式一：注册为技能（推荐）
 
 将整个目录复制到 skills 文件夹：
 
 ```bash
-# 如果 skills 目录不存在，先创建
 mkdir -p ~/.claude/skills
-
-# 复制技能
 cp -r chinese-academic-report ~/.claude/skills/
 ```
 
@@ -51,21 +56,58 @@ cp -r chinese-academic-report ~/.claude/skills/
 claude skills register ~/.claude/skills/chinese-academic-report/SKILL.md
 ```
 
-### 方式二：直接使用
+#### 方式二：直接使用
 
-在 Claude Code 对话中直接引用 `SKILL.md` 文件即可，技能会自动读取参考文件。
+在 Claude Code 对话中直接引用 `SKILL.md` 文件，技能会自动读取参考文件。
+
+---
+
+### Cursor
+
+**无需额外安装。** 克隆仓库后，Cursor 会自动加载 `.cursor/rules/` 目录下的项目规则。
+
+规则文件位于 `.cursor/rules/chinese-academic-report.md`，配置为 `alwaysApply: true`，在所有对话中自动生效。
+
+使用步骤：
+1. 用 Cursor 打开本仓库
+2. 直接在对话框中描述你的报告需求即可
+3. AI 会按规则中的工作流程收集信息、设计大纲，然后生成脚本
+
+---
+
+### Trae
+
+**无需额外安装。** 克隆仓库后，Trae 会自动加载 `.trae/rules/` 目录下的项目规则。
+
+规则文件位于 `.trae/rules/chinese-academic-report.md`，配置为 `alwaysApply: true`，在所有对话中自动生效。
+
+使用步骤：
+1. 用 Trae 打开本仓库
+2. 直接在对话框中描述你的报告需求即可
+3. AI 会按规则中的工作流程收集信息、设计大纲，然后生成脚本
+
+> **提示：** 也可以将规则文件设为 `alwaysApply: false`，然后在对话中通过 `#chinese-academic-report` 手动激活。
 
 ## 使用方法
 
-### 快速开始
+### Claude Code
 
-技能注册后，在 Claude Code 中输入以下任一关键词即可触发：
+技能注册后，输入以下任一关键词即可触发：
 
 - "帮我生成一份期末报告"
 - "生成一份课程报告"
 - "生成定制班课程报告"
 - "制作中文Word报告"
 - "写一份期末总结报告"
+
+### Cursor / Trae
+
+直接输入自然语言需求即可，例如：
+
+- "生成一份C++课程报告，学生张三，计软学院"
+- "制作期末报告：Python数据分析，软件工程专业"
+
+AI 会自动按照规范收集剩余信息、生成大纲并编写脚本。
 
 ### 需要提供的信息
 
@@ -128,9 +170,13 @@ mkRow("提交日期：", "<<提交日期>>"),   // 替换为提交日期
 
 ```
 chinese-academic-report/
-├── SKILL.md                          # 技能定义与工作流程
+├── SKILL.md                          # Claude Code 技能定义与工作流程
 ├── README.md                         # 本文件
 ├── LICENSE                           # MIT 许可证
+├── .cursor/rules/
+│   └── chinese-academic-report.md    # Cursor 项目规则（自动加载）
+├── .trae/rules/
+│   └── chinese-academic-report.md    # Trae 项目规则（自动加载）
 └── references/
     ├── format-specs.md               # 完整格式规范（字体、字号、间距等全部细节）
     ├── helper-templates.md           # JavaScript 辅助函数代码和文档组装模板
@@ -142,7 +188,9 @@ chinese-academic-report/
 
 | 文件 | 内容 |
 |------|------|
-| `SKILL.md` | 技能定义、三阶段工作流程、格式速查表 |
+| `SKILL.md` | Claude Code 技能定义、三阶段工作流程、格式速查表 |
+| `.cursor/rules/chinese-academic-report.md` | Cursor 项目规则（`alwaysApply: true`，自动生效） |
+| `.trae/rules/chinese-academic-report.md` | Trae 项目规则（`alwaysApply: true`，自动生效） |
 | `format-specs.md` | 撰写规范全部细节 — 标题、摘要、目录、表格、插图、代码、引用、附录 |
 | `helper-templates.md` | 完整可复制的 JS 代码：常量定义、`p()`、`h1()`–`h4()`、`tc()`、`mkRow()`、`makeCover()`、`makeAbstract()`、`makeGlossary()`、`makeGradingTable()` 以及 `main()` 组装函数 |
 | `page-setup.md` | A4 尺寸、25mm 页边距、页眉页脚距离、缩进值、行距计算公式 |
