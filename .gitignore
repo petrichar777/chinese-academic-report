@@ -1,0 +1,8 @@
+# Claude Code local settings
+.claude/
+
+# Node modules (if user runs npm install)
+node_modules/
+
+# Generated report files
+*.docx
